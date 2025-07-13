@@ -10,19 +10,28 @@ struct ContentView: View {
     @StateObject var viewModel = PomodoroViewModel()
 
     var body: some View {
-        // Get current season image name
-        let backgroundImage = currentSeason()
+        let backgroundImage = "SummerTree"
 
-        return ZStack {
-            // Dynamic seasonal background
+        ZStack {
+            // Background image
             Image(backgroundImage)
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
 
-            // Foreground UI
+            // Main UI stack
             VStack {
-                // Title at top
+                // Clock + digital time
+                HStack(alignment: .center, spacing: 10) {
+                    ClockTimerView()
+                        .frame(width: 120, height: 120)
+
+                    DigitalClockView()
+                        .frame(width: 200, height: 75)
+                }
+                .padding(.top, 50)
+
+                // Title
                 Text(viewModel.timerMode == .stopped ? "Let's Begin" :
                      viewModel.timerMode == .work ? "Productivity Time" : "Break Time")
                     .font(.system(size: 30, weight: .bold))
@@ -31,7 +40,7 @@ struct ContentView: View {
 
                 Spacer()
 
-                // Blurry timer + controls box at bottom
+                // Timer + Buttons
                 VStack(spacing: 16) {
                     Text(viewModel.formatTime())
                         .font(.system(size: 48, weight: .bold, design: .monospaced))
@@ -45,7 +54,7 @@ struct ContentView: View {
                                 viewModel.startTimer()
                             }
                         }) {
-                            Text(buttonText())
+                            Text(buttonText(viewModel))
                                 .frame(minWidth: 120)
                         }
                         .buttonStyle(.borderedProminent)
@@ -69,8 +78,7 @@ struct ContentView: View {
         }
     }
 
-    // Dynamically sets the button label
-    private func buttonText() -> String {
+    private func buttonText(_ viewModel: PomodoroViewModel) -> String {
         if viewModel.isRunning {
             return "Pause"
         } else if viewModel.timerMode == .stopped {
@@ -79,25 +87,8 @@ struct ContentView: View {
             return "Let's Resume"
         }
     }
-
-    // Season Helper
-    private func currentSeason() -> String {
-        let month = Calendar.current.component(.month, from: Date())
-        switch month {
-        case 3...5:
-            return "SpringTree"
-        case 6...8:
-            return "SummerTree"
-        case 9...11:
-            return "AutumnTree"
-        default:
-            return "WinterTree"
-        }
-    }
 }
 
 #Preview {
     ContentView()
 }
-
-// test push
