@@ -21,6 +21,21 @@ struct ContentView: View {
 
             // Main UI stack
             VStack {
+            
+                HStack() {
+                    Menu{
+                        Text("Wallpaper Menu")
+                        Text("Timer Setting")
+                        Text("About")
+                    } label:{Image(systemName: "ellipsis.circle.fill") // This shows the icon
+                            .resizable()
+                            .frame(width: 28, height: 28)
+                            .foregroundColor(.white.opacity(0.6))
+                            .padding()}
+                }
+                .padding(.leading, 275.0)
+               
+                
                 // Clock + digital time
                 HStack(alignment: .center, spacing: 10) {
                     ClockTimerView()
@@ -29,14 +44,14 @@ struct ContentView: View {
                     DigitalClockView()
                         .frame(width: 200, height: 75)
                 }
-                .padding(.top, 50)
+                .padding(.top, 110.0)
 
                 // Title
                 Text(viewModel.timerMode == .stopped ? "Let's Begin" :
                      viewModel.timerMode == .work ? "Productivity Time" : "Break Time")
                     .font(.system(size: 30, weight: .bold))
                     .foregroundColor(.white)
-                    .padding(.top, 160)
+                    .padding(.top, 25.0)
 
                 Spacer()
 
